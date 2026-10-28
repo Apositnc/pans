@@ -1,3 +1,5 @@
+# 一些公共配置
+
 add_library(pans_options INTERFACE)
 
 target_compile_options(pans_options INTERFACE

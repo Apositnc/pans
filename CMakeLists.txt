@@ -1,17 +1,18 @@
 cmake_minimum_required(VERSION 3.25)
-
+#明确指定编译器路径
 set(CMAKE_C_COMPILER "/usr/bin/gcc" CACHE FILEPATH "C compiler" FORCE)
 set(CMAKE_CXX_COMPILER "/usr/bin/g++" CACHE FILEPATH "C++ compiler" FORCE)
-
+#使用cpp20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 project(pans VERSION 0.1.0 LANGUAGES CXX C)
-
+#引入安装相关模块
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+#示例 测试 工具 的开关
 option(PANS_BUILD_EXAMPLES "Build examples" ON)
 option(PANS_BUILD_TESTS    "Build tests"    ON)
 option(PANS_BUILD_TOOLS    "Build tools"    ON)
@@ -28,6 +29,7 @@ math(EXPR JOBS "${CPU_NUMS} + ${CPU_NUMS}/2")
 set(CMAKE_BUILD_PARALLEL_LEVEL ${JOBS} CACHE STRING "并行编译线程数")
 message(STATUS "Compiler default work jobs: ${CMAKE_BUILD_PARALLEL_LEVEL}")
 
+#项目自己的编译选项抽到这里进行管理
 include(cmake/pansOptions.cmake)
 
 add_subdirectory(pans)
