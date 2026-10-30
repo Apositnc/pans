@@ -49,7 +49,7 @@ void test_types_and_constants()
 
 [[nodiscard]] int test_assert_retval2()
 {
-    ASSERT_RETVAL2(false,-1,"this is retval2 test");
+    ASSERT_RETVAL2(false,-2,"this is retval2 test");
     return 0;
 }
 
@@ -67,15 +67,55 @@ void test_macros()
 
     for(i=0;i<10;++i)
     {
-        ASSERT_CONTINUE(i!=n);
-        std::cout<<"AAA----"<<i<<std::endl;
+        ASSERT_CONTINUE2(i!=n,"this is ASSERT_CONTINUE2 "<<i);
+        std::cout<<"BBB----"<<i<<std::endl;
     }
-    std::cout<<"AAA----__________________________"<<i<<std::endl;
+    std::cout<<"BBB----__________________________"<<i<<std::endl;
 
     for(i=0;i<10;++i)
     {
-        ASSERT_CONTINUE(i!=n);
-        std::cout<<"AAA----"<<i<<std::endl;
+        ASSERT_BREAK(i!=n);
+        std::cout<<"CCC----"<<i<<std::endl;
     }
-    std::cout<<"AAA----__________________________"<<i<<std::endl;
+    std::cout<<"CCC----__________________________"<<i<<std::endl;
+    for(i=0;i<10;++i)
+    {
+        ASSERT_BREAK2(i!=n,"this is ASSERT_BREAK2 "<<i);
+        std::cout<<"DDD----"<<i<<std::endl;
+    }
+
+    std::cout<<"DDD----__________________________"<<i<<std::endl;
+    for(i=0;i<10;++i)
+    {
+        ASSERT_NOEFFECT(i!=n);
+        std::cout<<"EEE----"<<i<<std::endl;
+    }
+    std::cout<<"EEE----__________________________"<<i<<std::endl;
+    for(i=0;i<10;++i)
+    {
+        ASSERT_NOEFFECT2(i!=n,"this is ASSERT_NOEFFECT2 "<<i );
+        std::cout<<"FFF----"<<i<<std::endl;
+    }
+    std::cout<<"FFF----__________________________"<<i<<std::endl;
+    
+}
+
+int main()
+{
+#ifdef PANS_DEBUG
+    std::cout << "This program is compiled in debug mode. Assert will terminate the program on failure." << std::endl;
+#endif
+
+#ifdef NDEBUG
+    std::cout << "This program is compiled in release mode. Assert will do nothing on failure." << std::endl;
+#endif
+
+    test_types_and_constants();
+    test_macros();
+    int rev = test_assert_retval();
+    std::cout<< " return val1 :"<<rev<<std::endl;
+    int rev2 = test_assert_retval2();
+    std::cout<< " return val2 :"<<rev2<<std::endl;
+
+    return EXIT_SUCCESS;
 }

@@ -27,15 +27,16 @@
         PANS_ASSERT(x);      \
         return val;          \
     } while (0)
-//break是do这一层 return 是推出这个断言
-//这里写do while不是为了循环 而是为了 
+// break：退出宏内部的 do…while
+// return：退出调用这个宏的整个函数
 #define ASSERT_RETVAL2(x,val,info)\
     do{\
         if(x)[[likely]] break;\
-        PANS_ASSERT(x,info);\
+        PANS_ASSERT2(x,info);\
         return val;\
     }while(0)
-
+    
+//
 #define ASSERT_RETNONE(x)\
     do{\
         if(x) [[likely]] break;\
@@ -48,7 +49,7 @@
         PANS_ASSERT2(x,info);\
         return;\
     }while(0)
-
+//
 #define ASSERT_NOEFFECT(x)\
     do{\
         if(x) [[likely]] break;\
@@ -60,32 +61,30 @@
         PANS_ASSERT2(x,info);\
     }while(0)
 
+//下面这四个宏的break continue是为了影响外面的而不是宏内部的 所以不能用while
 #define ASSERT_CONTINUE(x)\
-    do{\
-        if(!(x)) [[unlikely]] break;\
+    if (!(x)) [[unlikely]] {\
         PANS_ASSERT(x);\
         continue;\
-    }while(0)
+    } else {}
+
 #define ASSERT_CONTINUE2(x,info)\
-    do{\
-        if(!(x)) [[unlikely]] break;\
+    if (!(x)) [[unlikely]] {\
         PANS_ASSERT2(x,info);\
         continue;\
-    }while(0)
+    } else {}
 
 #define ASSERT_BREAK(x)\
-    do{\
-        if(!(x)) [[unlikely]] break;\
+    if (!(x)) [[unlikely]] {\
         PANS_ASSERT(x);\
         break;\
-    }while(0)
-    
+    } else {}
+
 #define ASSERT_BREAK2(x,info)\
-    do{\
-        if(!(x)) [[unlikely]] break;\
+    if (!(x)) [[unlikely]] {\
         PANS_ASSERT2(x,info);\
         break;\
-    }while(0)
+    } else {}
 
 #define INVALID64 (~0ULL)
 #define INVALID32 0xFFFFFFFF
@@ -97,13 +96,13 @@
 #define MAX_U32 0xFFFFFFFF
 #define MAX_U64 (~0ULL)
 
-using u8 = uint8_t;
-using s8 = int8_t;
-using u16 = uint16_t;
-using s16 = int16_t;
-using u32 = uint32_t;
-using s32 = int32_t;
-using u64 = uint64_t;
-using s64 = int64_t;
+using u8 = std::uint8_t;
+using s8 = std::int8_t;
+using u16 = std::uint16_t;
+using s16 = std::int16_t;
+using u32 = std::uint32_t;
+using s32 = std::int32_t;
+using u64 = std::uint64_t;
+using s64 = std::int64_t;
 
 #endif
